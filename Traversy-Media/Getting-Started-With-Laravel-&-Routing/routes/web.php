@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -75,3 +76,80 @@ public function boot(): void
 Route::pattern('id', '[0-9]+'); // it works with any route that has id;
 }
  */
+
+//-------Route Object & Query Params
+Route::get('/test2', function (Request $request) {
+    return [
+        'method' => $request->method(),
+        'root' => $request->root(),
+        'url' => $request->url(),
+        'rull' => $request->fullUrl(),
+        'ip' => $request->ip(),
+        'method' => $request->method(),
+        'method' => $request->method(),
+        'method' => $request->method(),
+        'method' => $request->method(),
+        'method' => $request->method(),
+        'method' => $request->method(),
+        'method' => $request->method(),
+
+    ];
+});
+
+Route::get('/profile', function (Request $request) {
+    return $request->query('name');
+
+});
+
+// http://127.0.0.1:8000/profile?name=Mejbaul
+
+Route::get('/profile1', function (Request $request) {
+    return $request->only('name');
+});
+
+//http://127.0.0.1:8000/profile2?name=Mejbaul&age=32
+
+Route::get('/profile2', function (Request $request) {
+    return $request->only(['name', 'age']);
+});
+
+//http: //127.0.0.1:8000/profile2?name=Mejbaul&age=32
+//http://127.0.0.1:8000/profile2?name=Mejbaul&age=32&sort=desc
+
+Route::get('/profile3', function (Request $request) {
+    return $request->all();
+});
+
+//http: //127.0.0.1:8000/profile2?name=Mejbaul&age=32
+
+Route::get('/user', function (Request $request) {
+    return $request->has('name'); // return true(1) or False (nothing)
+});
+
+//http: //127.0.0.1:8000/profile2?name=Mejbaul&age=32 return 1
+
+Route::get('/user1', function (Request $request) {
+    return $request->input('name');
+
+});
+
+Route::get('/user2', function (Request $request) {
+    return $request->input('name'); // The difference between input and query is input is work with both in query and form.
+
+});
+
+// http://127.0.0.1:8000/user2?name=Mejbaul
+
+Route::get('/user3', function (Request $request) {
+    return $request->input('name', 'Default Name'); // The difference between input and query is input is work with both in query and form.
+
+});
+
+//http://127.0.0.1:8000/user3
+
+Route::get('/user4', function (Request $request) {
+    return $request->except(['name']);
+});
+//http: //127.0.0.1:8000/profile2?name=Mejbaul&age=32
+
+//$request->session()->get('key') - Get a session value by key
