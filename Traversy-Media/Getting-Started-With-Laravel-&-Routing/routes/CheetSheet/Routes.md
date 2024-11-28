@@ -151,4 +151,55 @@ Route::get('/user4', function (Request $request) {
 //http: //127.0.0.1:8000/profile2?name=Mejbaul&age=32
 
 //$request->session()->get('key') - Get a session value by key
+
+//---------------Response Helper
+
+Route::get('/test', function () {
+    return response('Hello World');
+});
+
+Route::get('/notfound', function () {
+    return response('Page not found', 404);
+});
+
+
+Route::get('/notfound', function () {
+    return response('Page not found', 404);
+});
+
+Route::get('/test1', function () {
+
+    return response('<h1>Hello World</h1>')->header('Content-Type', 'text/plain');
+});
+
+Route::get('/test2', function () {
+
+    return response('<h1>Hello World</h1>')->header('Content-Type', 'text/html');
+});
+
+Route::get('/test3', function () {
+
+    return response()->json(['name' => 'Mejbaul Mubin']);
+});
+
+Route::get('/download', function () {
+
+    return response()->download(public_path('favicon.ico'));
+});
+
+Route::get('/test4', function () {
+
+    return response()->json(['name' => 'Mejbaul Mubin'])->cookie('name', 'Mejbaul Mubin');;
+});
+
+Route::get('/test', function () {
+    return response('Hello World')->cookie('name', 'John Doe');
+});
+
+Route::get('/read-cookie', function (Request $request) {
+    $cookieValue = $request->cookie('hello');
+    return response()->json(['cookie' => $cookieValue]);
+});
+
+
 ```

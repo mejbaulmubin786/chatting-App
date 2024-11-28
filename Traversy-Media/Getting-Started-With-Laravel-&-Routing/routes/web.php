@@ -7,11 +7,3 @@ Route::get('/', function () {
 });
 
 //---------------Response Helper
-
-Route::get('/test', function () {
-    return response('Hello World');
-});
-
-Route::get('/error', function () {
-    return response('Hello World', 404);
-});
