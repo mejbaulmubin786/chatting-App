@@ -25,3 +25,5 @@ Route::get('/jobs/profile1', function () {
     ];
     return view('jobs.index1', compact('title', 'jobs'));
 });
+
+// Blade Templates & Directives
