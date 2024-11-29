@@ -7,12 +7,21 @@ Route::get('/', function () {
 });
 
 // ----------------Passing Data to Views
-//Second Way
+
+//third Way
 
 Route::get('/jobs/profile', function () {
-    return view('jobs.index')->with('title', 'Available Jobs');
+    $title = 'Available Jobs';
+    return view('jobs.index', compact('title'));
 });
 
-Route::get('/jobs/create', function () {
-    return view('jobs.create');
-})->name('jobs.create');
+Route::get('/jobs/profile1', function () {
+    $title = 'Available Jobs';
+    $jobs = [
+        'Web Developer',
+        'Database Admin',
+        'Software Engineer',
+        'Systems Analyst',
+    ];
+    return view('jobs.index1', compact('title', 'jobs'));
+});
