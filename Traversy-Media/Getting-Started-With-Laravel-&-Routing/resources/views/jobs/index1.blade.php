@@ -9,8 +9,8 @@
     <h1>{{ $title  }}</h1>
     <ul>
         @forelse ($jobs as $job)
-        @if($loop->first)
-        <li>First: {{ $job }}</li>
+        @if($loop->last)
+        <li>Last: {{ $job }}</li>
         @else
         <li>{{ $job }}</li>
         @endif
