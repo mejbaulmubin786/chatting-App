@@ -9,7 +9,11 @@
     <h1>{{ $title  }}</h1>
     <ul>
         @forelse ($jobs as $job)
-        <li>{{ $loop->remaining }}-{{ $job }}</li>
+        @if($loop->first)
+        <li>First: {{ $job }}</li>
+        @else
+        <li>{{ $job }}</li>
+        @endif
         @empty
         <li>No jobs available</li>
         @endforelse
