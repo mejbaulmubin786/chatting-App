@@ -13,6 +13,8 @@
             <li>{{ $job }}</li>
         @endforeach
     </ul>
+    @else
+    <p>No jobs available</p>
     @endif
 </body>
 </html>
