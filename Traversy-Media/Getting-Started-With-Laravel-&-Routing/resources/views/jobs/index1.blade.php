@@ -7,10 +7,12 @@
 </head>
 <body>
     <h1>{{ $title  }}</h1>
+    @if(!empty($jobs))
     <ul>
         @foreach ($jobs as $job)
             <li>{{ $job }}</li>
         @endforeach
     </ul>
+    @endif
 </body>
 </html>
