@@ -6,4 +6,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//---------------Response Helper
+//---------------Views & Controllers
+
+//---------------Create & Display views
+
+Route::get('/jobs', function () {
+    return view('jobs');
+})->name('jobs');
