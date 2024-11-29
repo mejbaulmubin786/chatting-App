@@ -8,10 +8,9 @@
 <body>
     <h1>{{ $title  }}</h1>
     <ul>
-        <li>Web Developer</li>
-        <li>Database Admin</li>
-        <li>Software Engineer</li>
-        <li>Systems Analyst</li>
+        @foreach ($jobs as $job)
+            <li>{{ $job }}</li>
+        @endforeach
     </ul>
 </body>
 </html>

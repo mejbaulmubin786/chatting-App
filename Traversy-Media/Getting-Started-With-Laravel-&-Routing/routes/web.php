@@ -6,14 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// ----------------Passing Data to Views
-
-//third Way
-
-Route::get('/jobs/profile', function () {
-    $title = 'Available Jobs';
-    return view('jobs.index', compact('title'));
-});
+// Blade Templates & Directives
 
 Route::get('/jobs/profile1', function () {
     $title = 'Available Jobs';
@@ -25,5 +18,3 @@ Route::get('/jobs/profile1', function () {
     ];
     return view('jobs.index1', compact('title', 'jobs'));
 });
-
-// Blade Templates & Directives
