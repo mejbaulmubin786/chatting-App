@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,13 +9,5 @@ Route::get('/', function () {
 
 // Blade Templates & Directives
 
-Route::get('/jobs/profile1', function () {
-    $title = 'Available Jobs';
-    $jobs = [
-        'Web Developer',
-        'Database Admin',
-        'Software Engineer',
-        'Systems Analyst',
-    ];
-    return view('jobs.index1', compact('title', 'jobs'));
-});
+Route::get('/jobs/profile', [JobController::class, 'index']);
+Route::get('/jobs/create', [JobController::class, 'create']);
