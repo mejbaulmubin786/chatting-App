@@ -6,12 +6,11 @@
     <title>Job Create</title>
 </head>
 <body>
-    <h1>Create</h1>
-    <ul>
-        <li>Web Developer</li>
-        <li>Database Admin</li>
-        <li>Software Engineer</li>
-        <li>Systems Analyst</li>
-    </ul>
+    <h1>Create New Job</h1>
+    <form action="/jobs" method="POST">
+        <input type="text" name="title" placeholder="title">
+        <input type="text" name="description" placeholder="description">
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
