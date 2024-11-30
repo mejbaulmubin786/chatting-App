@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<htodd lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +9,10 @@
     <h1>{{ $title  }}</h1>
     <ul>
         @forelse ($jobs as $job)
-        @if($loop->last)
-        <li>Last: {{ $job }}</li>
-        @else
         <li>{{ $job }}</li>
-        @endif
         @empty
         <li>No jobs available</li>
         @endforelse
     </ul>
 </body>
-</html>
+</htodd
