@@ -7,6 +7,6 @@
     <title>Welcome To Workopia</title>
 </head>
 <body>
-    <h1>Welcome to Workopia</h1>
+    <h1>Availabel Jobs</h1>
 </body>
 </html>

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<htodd lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job listings</title>
+    <title>Job Listings</title>
 </head>
 <body>
-    <h1>{{ $title  }}</h1>
+    <h1>Available Jobs</h1>
     <ul>
         @forelse ($jobs as $job)
-        <li>{{ $job }}</li>
+            <li>{{ $job }}</li>
         @empty
-        <li>No jobs available</li>
+            <li>No jobs available</li>
         @endforelse
     </ul>
 </body>
-</htodd
+</html>
