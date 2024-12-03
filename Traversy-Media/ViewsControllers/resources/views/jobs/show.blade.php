@@ -1,8 +1,3 @@
-@extends('layout')
-@section('title')
-    Sow job
-@endsection
-@section('content')
+<x-layout>
     <h1>Show jobs</h1>
-@endsection
-
+</x-layout>
