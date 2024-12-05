@@ -1,3 +1,6 @@
-<div>
-    <!-- Order your soul. Reduce your wants. - Augustine -->
-</div>
+@php
+    echo $attributes;
+@endphp
+<a>
+    {{ $slot }}
+</a>
