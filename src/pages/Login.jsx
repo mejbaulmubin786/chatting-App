@@ -7,6 +7,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import LoginImg from "../assets/login.png";
+import { Link as RouterLink } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -67,7 +68,7 @@ const Login = () => {
                 fullWidth
                 margin="normal"
               />
-              
+
               <TextField
                 label="Password"
                 type="password"
@@ -96,7 +97,12 @@ const Login = () => {
               {/* Sign In Link */}
               <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                 Already have an account?{" "}
-                <Link href="#" underline="hover" sx={{ color: "orange" }}>
+                <Link
+                  component={RouterLink}  // React Router Link হিসেবে ব্যবহার হচ্ছে
+                  to="/"       // Registration পেজের রাউট
+                  underline="hover"
+                  sx={{ color: "orange" }}
+                >
                   Sign up
                 </Link>
               </Typography>
