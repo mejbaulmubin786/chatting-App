@@ -7,6 +7,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import LoginImg from "../assets/login.png";
+import GoogleLogo from "../assets/google-logo.png";
 import { Link as RouterLink } from "react-router-dom";
 
 const Login = () => {
@@ -56,9 +57,10 @@ const Login = () => {
               >
                 Login to your account!
               </Typography>
-              <Typography variant="body2" sx={{ mb: 3, color: "gray" }}>
-                Free register and you can enjoy it
-              </Typography>
+              <div className="logo-box">
+                <img src={GoogleLogo} alt="" />
+                <p>Login With Google</p>
+              </div>
 
               {/* Form Fields */}
               <TextField

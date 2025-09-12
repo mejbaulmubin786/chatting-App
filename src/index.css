@@ -1,0 +1,15 @@
+.logo-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.logo-box img {
+  padding-right: 20px;
+}
+
+.logo-box:hover {
+  border: 1px solid black;
+}
