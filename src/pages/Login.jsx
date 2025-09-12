@@ -57,10 +57,32 @@ const Login = () => {
               >
                 Login to your account!
               </Typography>
-              <div className="logo-box">
-                <img src={GoogleLogo} alt="" />
-                <p>Login With Google</p>
-              </div>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  border: "1px solid rgba(0, 0, 0, 0.3)",
+                  borderRadius: "5px",
+                  pl: 1.5,
+                  py: 2,
+                  mb: 1.3,
+                  cursor: "pointer",
+                  "&:hover": {
+                    border: "1px solid black",
+                  },
+                }}
+              >
+                <Box
+                  component="img"
+                  src={GoogleLogo}
+                  alt="Google logo"
+                  sx={{ pr: 2, width: 24, height: 24 }}
+                />
+                <Typography sx={{ fontWeight: 500, color: "#333" }}>
+                  Login with Google
+                </Typography>
+              </Box>
+
 
               {/* Form Fields */}
               <TextField
