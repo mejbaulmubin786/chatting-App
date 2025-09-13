@@ -28,14 +28,45 @@ const Registration = () => {
   const handleSignUp = () => {
     let newErrors = {};
 
+    // Email validation
     if (!email.trim()) {
       newErrors.email = "Email is required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
+    ) {
+      newErrors.email = "Please enter a valid email address";
     }
+
+    // Name validation
     if (!name.trim()) {
       newErrors.name = "Full Name is required";
     }
+
+    // Password validation
     if (!password.trim()) {
       newErrors.password = "Password is required";
+    } else {
+      let passwordErrors = [];
+
+      if (password.length < 8) {
+        passwordErrors.push("at least 8 characters");
+      }
+      if (!/[A-Z]/.test(password)) {
+        passwordErrors.push("one uppercase letter");
+      }
+      if (!/[a-z]/.test(password)) {
+        passwordErrors.push("one lowercase letter");
+      }
+      if (!/[0-9]/.test(password)) {
+        passwordErrors.push("one number");
+      }
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        passwordErrors.push("one special character");
+      }
+
+      if (passwordErrors.length > 0) {
+        newErrors.password = `Password must contain ${passwordErrors.join(", ")}`;
+      }
     }
 
     setErrors(newErrors);
