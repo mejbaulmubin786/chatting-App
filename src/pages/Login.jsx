@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -8,9 +8,15 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import LoginImg from "../assets/login.png";
 import GoogleLogo from "../assets/google-logo.png";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 
 const Login = () => {
+  // 👀 state for password show/hide
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Box
       sx={{
@@ -51,12 +57,14 @@ const Login = () => {
                   fontWeight: "bold",
                   mb: 1,
                   color: "#1a1a1a",
-                  whiteSpace: "nowrap", // ✅ এক লাইনে থাকবে
+                  whiteSpace: "nowrap",
                   lineHeight: 1.3,
                 }}
               >
                 Login to your account!
               </Typography>
+
+              {/* Google Login */}
               <Box
                 sx={{
                   display: "flex",
@@ -83,8 +91,7 @@ const Login = () => {
                 </Typography>
               </Box>
 
-
-              {/* Form Fields */}
+              {/* Email Field */}
               <TextField
                 label="Email Address"
                 type="email"
@@ -93,15 +100,28 @@ const Login = () => {
                 margin="normal"
               />
 
+              {/* Password Field with Eye Icon */}
               <TextField
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
-              {/* Sign Up Button */}
+              {/* Login Button */}
               <Button
                 variant="contained"
                 fullWidth
@@ -118,12 +138,12 @@ const Login = () => {
                 Login to Continue
               </Button>
 
-              {/* Sign In Link */}
+              {/* Sign Up Link */}
               <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-                Already have an account?{" "}
+                Don’t have an account?{" "}
                 <Link
-                  component={RouterLink}  // React Router Link হিসেবে ব্যবহার হচ্ছে
-                  to="/"       // Registration পেজের রাউট
+                  component={RouterLink}
+                  to="/" // Registration route
                   underline="hover"
                   sx={{ color: "orange" }}
                 >
@@ -138,7 +158,7 @@ const Login = () => {
             <Box
               component="img"
               src={LoginImg}
-              alt="Registration"
+              alt="Login"
               sx={{
                 width: "100%",
                 height: "100%",
