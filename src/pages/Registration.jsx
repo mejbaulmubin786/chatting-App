@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -7,9 +7,15 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import RegistrationImg from "../assets/registration.png";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 
 const Registration = () => {
+  // 👀 state for password show/hide
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Box
       sx={{
@@ -75,12 +81,26 @@ const Registration = () => {
                 fullWidth
                 margin="normal"
               />
+
+              {/* Password Field with Eye Icon */}
               <TextField
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               {/* Sign Up Button */}
@@ -104,8 +124,8 @@ const Registration = () => {
               <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                 Already have an account?{" "}
                 <Link
-                  component={RouterLink}  // React Router Link হিসেবে ব্যবহার হচ্ছে
-                  to="/login"             // যেই রাউটে নেভিগেট করতে চান
+                  component={RouterLink}
+                  to="/login"
                   underline="hover"
                   sx={{ color: "orange" }}
                 >

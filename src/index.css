@@ -1,0 +1,11 @@
+/* Hide default browser eye icon for password fields */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-clear-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
