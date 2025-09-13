@@ -17,6 +17,35 @@ const Login = () => {
   // 👀 state for password show/hide
   const [showPassword, setShowPassword] = useState(false);
 
+  // form states
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // error states
+  const [errors, setErrors] = useState({});
+
+
+  // handle form submit
+  const handleLogin = () => {
+    let newErrors = {};
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+
+    // ✅ যদি error না থাকে
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Email:", email);
+      console.log("Password:", password);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -31,7 +60,7 @@ const Login = () => {
       <Paper
         elevation={3}
         sx={{
-          maxWidth: 1100,
+          maxWidth: 800,
           width: "100%",
           borderRadius: 3,
           overflow: "hidden",
@@ -93,20 +122,26 @@ const Login = () => {
 
               {/* Email Field */}
               <TextField
+                onChange={(e) => setEmail(e.target.value)}
                 label="Email Address"
                 type="email"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!errors.email}
+                helperText={errors.email}
               />
 
               {/* Password Field with Eye Icon */}
               <TextField
+                onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 type={showPassword ? "text" : "password"}
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!errors.password}
+                helperText={errors.password}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -123,6 +158,7 @@ const Login = () => {
 
               {/* Login Button */}
               <Button
+                onClick={handleLogin}
                 variant="contained"
                 fullWidth
                 sx={{

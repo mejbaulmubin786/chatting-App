@@ -16,6 +16,38 @@ const Registration = () => {
   // 👀 state for password show/hide
   const [showPassword, setShowPassword] = useState(false);
 
+  // form states
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+
+  // error states
+  const [errors, setErrors] = useState({});
+
+  // handle form submit
+  const handleSignUp = () => {
+    let newErrors = {};
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
+    if (!name.trim()) {
+      newErrors.name = "Full Name is required";
+    }
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+
+    // ✅ যদি error না থাকে
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Email:", email);
+      console.log("Name:", name);
+      console.log("Password:", password);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -30,7 +62,7 @@ const Registration = () => {
       <Paper
         elevation={3}
         sx={{
-          maxWidth: 1100,
+          maxWidth: 800,
           width: "100%",
           borderRadius: 3,
           overflow: "hidden",
@@ -51,12 +83,12 @@ const Registration = () => {
           >
             <Box sx={{ maxWidth: 400, width: "100%" }}>
               <Typography
-                variant="h5"
+                variant="h6"
                 sx={{
                   fontWeight: "bold",
                   mb: 1,
                   color: "#1a1a1a",
-                  whiteSpace: "nowrap", // ✅ এক লাইনে থাকবে
+                  whiteSpace: "nowrap",
                   lineHeight: 1.3,
                 }}
               >
@@ -66,29 +98,43 @@ const Registration = () => {
                 Free register and you can enjoy it
               </Typography>
 
-              {/* Form Fields */}
+              {/* Email Field */}
               <TextField
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 label="Email Address"
                 type="email"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!errors.email}
+                helperText={errors.email}
               />
+
+              {/* Name Field */}
               <TextField
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 label="Full Name"
                 type="text"
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!errors.name}
+                helperText={errors.name}
               />
 
               {/* Password Field with Eye Icon */}
               <TextField
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 label="Password"
                 type={showPassword ? "text" : "password"}
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                error={!!errors.password}
+                helperText={errors.password}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -105,6 +151,7 @@ const Registration = () => {
 
               {/* Sign Up Button */}
               <Button
+                onClick={handleSignUp}
                 variant="contained"
                 fullWidth
                 sx={{
