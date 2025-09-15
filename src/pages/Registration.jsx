@@ -11,9 +11,14 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,   // ✅ এখানে যোগ করতে হবে
+} from "firebase/auth";
 
 const Registration = () => {
-  // 👀 state for password show/hide
+  const auth = getAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   // form states
@@ -31,9 +36,7 @@ const Registration = () => {
     // Email validation
     if (!email.trim()) {
       newErrors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
-    ) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
@@ -48,21 +51,12 @@ const Registration = () => {
     } else {
       let passwordErrors = [];
 
-      if (password.length < 8) {
-        passwordErrors.push("at least 8 characters");
-      }
-      if (!/[A-Z]/.test(password)) {
-        passwordErrors.push("one uppercase letter");
-      }
-      if (!/[a-z]/.test(password)) {
-        passwordErrors.push("one lowercase letter");
-      }
-      if (!/[0-9]/.test(password)) {
-        passwordErrors.push("one number");
-      }
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      if (password.length < 8) passwordErrors.push("at least 8 characters");
+      if (!/[A-Z]/.test(password)) passwordErrors.push("one uppercase letter");
+      if (!/[a-z]/.test(password)) passwordErrors.push("one lowercase letter");
+      if (!/[0-9]/.test(password)) passwordErrors.push("one number");
+      if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password))
         passwordErrors.push("one special character");
-      }
 
       if (passwordErrors.length > 0) {
         newErrors.password = `Password must contain ${passwordErrors.join(", ")}`;
@@ -73,9 +67,27 @@ const Registration = () => {
 
     // ✅ যদি error না থাকে
     if (Object.keys(newErrors).length === 0) {
-      console.log("Email:", email);
-      console.log("Name:", name);
-      console.log("Password:", password);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          // 🔹 প্রথমে নাম আপডেট
+          updateProfile(user, { displayName: name })
+            .then(() => {
+              console.log("User created with name:", name);
+
+              // 🔹 সব ফিল্ড খালি করা
+              setEmail("");
+              setPassword("");
+              setName("");
+            })
+            .catch((error) => {
+              console.error("Profile update error:", error);
+            });
+        })
+        .catch((error) => {
+          console.error("Signup error:", error.message);
+        });
     }
   };
 
