@@ -12,8 +12,10 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
+  const auth = getAuth();
   // 👀 state for password show/hide
   const [showPassword, setShowPassword] = useState(false);
 
@@ -68,6 +70,23 @@ const Login = () => {
 
     // ✅ যদি error না থাকে
     if (Object.keys(newErrors).length === 0) {
+
+
+
+
+      //----------------------start
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+      //----------------------End
+
       console.log("Email:", email);
       console.log("Password:", password);
     }
