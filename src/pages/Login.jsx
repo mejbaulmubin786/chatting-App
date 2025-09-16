@@ -9,13 +9,14 @@ import Paper from "@mui/material/Paper";
 import LoginImg from "../assets/login.png";
 import GoogleLogo from "../assets/google-logo.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const auth = getAuth();
+  let navigate = useNavigate();
   // 👀 state for password show/hide
   const [showPassword, setShowPassword] = useState(false);
 
@@ -79,6 +80,7 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
+          navigate('/');
           // ...
         })
         .catch((error) => {
