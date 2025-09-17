@@ -81,6 +81,15 @@ const Login = () => {
           // Signed in 
           const user = userCredential.user;
           navigate('/');
+
+          /*
+          toast.success("login done");
+          setTimeout(()=>{
+            navigate('/');
+
+            }, 3000)
+
+          */
           // ...
         })
         .catch((error) => {
