@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import RegistrationImg from "../assets/registration.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import {
@@ -19,6 +19,7 @@ import {
 
 const Registration = () => {
   const auth = getAuth();
+  let navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   // form states
@@ -75,6 +76,7 @@ const Registration = () => {
           updateProfile(user, { displayName: name })
             .then(() => {
               console.log("User created with name:", name);
+              navigate('/Login');
 
               // 🔹 সব ফিল্ড খালি করা
               setEmail("");
