@@ -11,15 +11,18 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  updateProfile,   // ✅ এখানে যোগ করতে হবে
+  updateProfile,
+  sendEmailVerification,
 } from "firebase/auth";
 
 const Registration = () => {
   const auth = getAuth();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   // form states
@@ -27,11 +30,18 @@ const Registration = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
-  // error states
+  // error / status states
   const [errors, setErrors] = useState({});
+  const [firebaseError, setFirebaseError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // handle form submit
-  const handleSignUp = () => {
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setFirebaseError("");
+    setSuccessMsg("");
+
     let newErrors = {};
 
     // Email validation
@@ -56,7 +66,7 @@ const Registration = () => {
       if (!/[A-Z]/.test(password)) passwordErrors.push("one uppercase letter");
       if (!/[a-z]/.test(password)) passwordErrors.push("one lowercase letter");
       if (!/[0-9]/.test(password)) passwordErrors.push("one number");
-      if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password))
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password))
         passwordErrors.push("one special character");
 
       if (passwordErrors.length > 0) {
@@ -66,30 +76,47 @@ const Registration = () => {
 
     setErrors(newErrors);
 
-    // ✅ যদি error না থাকে
-    if (Object.keys(newErrors).length === 0) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
+    // stop if validation errors
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
 
-          // 🔹 প্রথমে নাম আপডেট
-          updateProfile(user, { displayName: name })
-            .then(() => {
-              console.log("User created with name:", name);
-              navigate('/Login');
+    // proceed with firebase signup
+    try {
+      setLoading(true);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-              // 🔹 সব ফিল্ড খালি করা
-              setEmail("");
-              setPassword("");
-              setName("");
-            })
-            .catch((error) => {
-              console.error("Profile update error:", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Signup error:", error.message);
-        });
+      // update profile displayName
+      await updateProfile(user, { displayName: name });
+
+      // send verification email using the created user object
+      await sendEmailVerification(user);
+
+      // success
+      setSuccessMsg(
+        "Registration successful! A verification email was sent — please check your inbox (and spam)."
+      );
+
+      // clear form
+      setEmail("");
+      setName("");
+      setPassword("");
+
+      // navigate to login after a short delay (optional)
+      setTimeout(() => {
+        navigate("/login");
+      }, 800);
+    } catch (err) {
+      console.error("Signup error:", err);
+      // better message for user
+      setFirebaseError(err.message || "Signup failed. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -126,7 +153,12 @@ const Registration = () => {
               p: { xs: 3, md: 6 },
             }}
           >
-            <Box sx={{ maxWidth: 400, width: "100%" }}>
+            {/* make this Box the form so Enter key submits */}
+            <Box
+              component="form"
+              onSubmit={handleSignUp}
+              sx={{ maxWidth: 400, width: "100%" }}
+            >
               <Typography
                 variant="h6"
                 sx={{
@@ -154,6 +186,7 @@ const Registration = () => {
                 margin="normal"
                 error={!!errors.email}
                 helperText={errors.email}
+                autoComplete="email"
               />
 
               {/* Name Field */}
@@ -167,6 +200,7 @@ const Registration = () => {
                 margin="normal"
                 error={!!errors.name}
                 helperText={errors.name}
+                autoComplete="name"
               />
 
               {/* Password Field with Eye Icon */}
@@ -180,12 +214,14 @@ const Registration = () => {
                 margin="normal"
                 error={!!errors.password}
                 helperText={errors.password}
+                autoComplete="new-password"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => setShowPassword((s) => !s)}
                         edge="end"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
                       >
                         {showPassword ? <FiEyeOff /> : <FiEye />}
                       </IconButton>
@@ -194,11 +230,24 @@ const Registration = () => {
                 }}
               />
 
+              {/* show firebase error or success */}
+              {firebaseError && (
+                <Typography color="error" align="center" sx={{ mt: 1 }}>
+                  {firebaseError}
+                </Typography>
+              )}
+              {successMsg && (
+                <Typography color="success.main" align="center" sx={{ mt: 1 }}>
+                  {successMsg}
+                </Typography>
+              )}
+
               {/* Sign Up Button */}
               <Button
-                onClick={handleSignUp}
+                type="submit"
                 variant="contained"
                 fullWidth
+                disabled={loading}
                 sx={{
                   mt: 3,
                   py: 1.5,
@@ -209,7 +258,7 @@ const Registration = () => {
                   textTransform: "none",
                 }}
               >
-                Sign up
+                {loading ? <CircularProgress size={20} color="inherit" /> : "Sign up"}
               </Button>
 
               {/* Sign In Link */}
