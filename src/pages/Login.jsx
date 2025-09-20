@@ -103,6 +103,8 @@ const Login = () => {
     }
   };
 
+  const forGetPassword = () => { }
+
   return (
     <Box
       sx={{
@@ -242,6 +244,10 @@ const Login = () => {
                 >
                   Sign up
                 </Link>
+
+                <Typography onClick={forGetPassword} variant="p" component="p" sx={{ color: " #6f42ffff" }}>
+                  Forgotten password
+                </Typography>
               </Typography>
             </Box>
           </Grid>
