@@ -73,25 +73,29 @@ const Login2 = () => {
 
     // ✅ যদি error না থাকে
     if (Object.keys(newErrors).length === 0) {
-
-
-
-
-
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
-          navigate('/');
+          console.log(userCredential.user.emailVerified);
+          if (userCredential.user.emailVerified === true) {
+            navigate('/');
+          } else {
+            setErrors({ email: "Please verify your email before logging in." });
+          }
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
         });
-      console.log("Email:", email);
-      console.log("Password:", password);
+      //console.log("Email:", email);
+      //console.log("Password:", password);
     }
   };
+
+  const handleGoogle = () => {
+    console.log('Google');
+  }
   const forGetPassword = () => { }
 
 
@@ -136,6 +140,7 @@ const Login2 = () => {
 
             {/* Google Login */}
             <Box
+              onClick={handleGoogle}
               sx={{
                 display: "flex",
                 alignItems: "center",
