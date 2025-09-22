@@ -100,7 +100,9 @@ const Login2 = () => {
   const forGetPassword = () => { 
     setShowFirstDiv(false);
   }
-
+const handleBackToLogin = () =>{
+  setShowFirstDiv(true);
+}
 
   return (
     <Box sx={{
@@ -293,7 +295,7 @@ const Login2 = () => {
           helperText={errors.email}
         />
         <Button
-          onClick={handleLogin}
+          onClick={handleBackToLogin}
           variant="contained"
           fullWidth
           sx={{
