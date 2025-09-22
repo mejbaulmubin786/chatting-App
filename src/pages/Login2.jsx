@@ -28,6 +28,7 @@ const Login2 = () => {
 
   // error states
   const [errors, setErrors] = useState({});
+  const [showFirstDiv, setShowFirstDiv] = useState(true);
 
 
   // handle form submit
@@ -96,7 +97,9 @@ const Login2 = () => {
   const handleGoogle = () => {
     console.log('Google');
   }
-  const forGetPassword = () => { }
+  const forGetPassword = () => { 
+    setShowFirstDiv(false);
+  }
 
 
   return (
@@ -115,6 +118,7 @@ const Login2 = () => {
           width: "100%",
           borderRadius: 5,
           overflow: "hidden",
+          display: showFirstDiv ? 'block' : 'none',
         }}
       >
         <Grid container spacing={0}>
@@ -264,6 +268,7 @@ const Login2 = () => {
           justifyContent: "center",
           borderRadius: 5,
           p: 5,
+          display: showFirstDiv ? 'none' : 'block',
         }}>
         <Typography
           variant="h5"
@@ -301,7 +306,7 @@ const Login2 = () => {
             textTransform: "none",
           }}
         >
-          Login to Continue
+          Back to Login
         </Button>
         <Button
           onClick={handleLogin}
@@ -317,7 +322,7 @@ const Login2 = () => {
             textTransform: "none",
           }}
         >
-          Login to Continue
+          Send Email
         </Button>
       </Paper>
     </Box>
