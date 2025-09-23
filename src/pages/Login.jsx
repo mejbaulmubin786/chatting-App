@@ -297,7 +297,6 @@ const Login = () => {
           maxWidth: 500,
           width: "100%",
           alignItems: "center",
-          display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           borderRadius: 5,
