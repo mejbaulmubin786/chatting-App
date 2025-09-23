@@ -6,6 +6,8 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import LoginImg from "../assets/login.png";
+import GoogleLogo from "../assets/google-logo.png";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -144,7 +146,7 @@ const Login = () => {
         }}
       >
         <Grid container spacing={0}>
-          <Grid item xs={12} md={6} sx={{
+          <Grid item size={6} sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -185,7 +187,7 @@ const Login = () => {
             >
               <Box
                 component="img"
-                src="/assets/google-logo.png"
+                src={GoogleLogo}
                 alt="Google logo"
                 sx={{ pr: 2, width: 24, height: 24 }}
               />
@@ -270,10 +272,10 @@ const Login = () => {
               Forgotten password?
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item size={6}>
             <Box
               component="img"
-              src="/assets/login.png"
+              src={LoginImg}
               alt="Login"
               sx={{
                 width: "100%",
