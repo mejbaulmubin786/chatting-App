@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import LoginImg from "../assets/login.png";
 import GoogleLogo from "../assets/google-logo.png";
+import BackgroundImg from "../assets/background2.jpg";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -134,6 +135,10 @@ const Login = () => {
       width: '100vw',
       boxSizing: "border-box",
       height: '100vh',
+      backgroundImage: `url(${BackgroundImg})`,
+      backgroundSize: "cover", // Ensures the image covers the entire Box
+      backgroundPosition: "center", // Centers the image
+      backgroundRepeat: "no-repeat", // Prevents the image from repeating
     }}>
       <Paper
         elevation={12}
@@ -314,8 +319,7 @@ const Login = () => {
         </Typography>
         <Typography
           variant="body2"
-          align="center"
-          sx={{ mb: 2, color: "#333" }}
+          sx={{ mb: 1, color: "#333" }}
         >
           Enter your email address to receive a password reset link.
         </Typography>
@@ -338,38 +342,45 @@ const Login = () => {
             {resetMessage}
           </Typography>
         )}
-        <Button
-          onClick={handleForgotPassword}
-          variant="contained"
-          fullWidth
-          sx={{
-            mt: 3,
-            py: 1.5,
-            background:
-              "linear-gradient(90deg, rgba(111,66,255,1) 0%, rgba(0,150,255,1) 100%)",
-            borderRadius: "8px",
-            fontWeight: "bold",
-            textTransform: "none",
-          }}
-        >
-          Send Reset Email
-        </Button>
-        <Button
-          onClick={handleBackToLogin}
-          variant="outlined"
-          fullWidth
-          sx={{
-            mt: 2,
-            py: 1.5,
-            borderColor: "#6f42ff",
-            color: "#6f42ff",
-            borderRadius: "8px",
-            fontWeight: "bold",
-            textTransform: "none",
-          }}
-        >
-          Back to Login
-        </Button>
+
+        <Box sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          <Button
+            onClick={handleForgotPassword}
+            variant="contained"
+            fullWidth
+            sx={{
+              mt: 2,
+              py: 1.5,
+              background:
+                "linear-gradient(90deg, rgba(111,66,255,1) 0%, rgba(0,150,255,1) 100%)",
+              borderRadius: "12px",
+              fontWeight: "bold",
+              textTransform: "none",
+            }}
+          >
+            Send Reset Email
+          </Button>
+          <Button
+            onClick={handleBackToLogin}
+            variant="outlined"
+            fullWidth
+            sx={{
+              mt: 2,
+              py: 1.5,
+              borderColor: "#6f42ff",
+              color: "#6f42ff",
+              borderRadius: "12px",
+              fontWeight: "bold",
+              textTransform: "none",
+            }}
+          >
+            Back to Login
+          </Button>
+        </Box>
       </Paper>
     </Box>
   );

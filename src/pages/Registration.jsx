@@ -7,6 +7,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import RegistrationImg from "../assets/registration.png";
+import BackgroundImg from "../assets/background.jpg";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -129,6 +130,10 @@ const Registration = () => {
         alignItems: "center",
         bgcolor: "#f9f9f9",
         p: 2,
+        backgroundImage: `url(${BackgroundImg})`, // Replace with your image path
+              backgroundSize: "cover", // Ensures the image covers the entire Box
+              backgroundPosition: "center", // Centers the image
+              backgroundRepeat: "no-repeat", // Prevents the image from repeating
       }}
     >
       <Paper
