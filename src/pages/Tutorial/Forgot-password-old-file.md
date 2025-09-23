@@ -6,13 +6,17 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import LoginImg from "../assets/login.png";
+import GoogleLogo from "../assets/google-logo.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-const Login = () => {
+const Login2 = () => {
+
+
   const auth = getAuth();
   let navigate = useNavigate();
   // 👀 state for password show/hide
@@ -25,7 +29,7 @@ const Login = () => {
   // error states
   const [errors, setErrors] = useState({});
   const [showFirstDiv, setShowFirstDiv] = useState(true);
-  const [resetMessage, setResetMessage] = useState("");
+
 
   // handle form submit
   const handleLogin = () => {
@@ -65,13 +69,16 @@ const Login = () => {
       }
     }
 
+
     setErrors(newErrors);
 
     // ✅ যদি error না থাকে
     if (Object.keys(newErrors).length === 0) {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          // Signed in 
           const user = userCredential.user;
+          console.log(userCredential.user.emailVerified);
           if (userCredential.user.emailVerified === true) {
             navigate('/');
           } else {
@@ -80,49 +87,22 @@ const Login = () => {
         })
         .catch((error) => {
           const errorCode = error.code;
-          if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
-            setErrors({ email: "Invalid email or password" });
-          } else {
-            setErrors({ email: "An error occurred. Please try again." });
-          }
+          const errorMessage = error.message;
         });
+      //console.log("Email:", email);
+      //console.log("Password:", password);
     }
   };
 
   const handleGoogle = () => {
     console.log('Google');
-  };
-
-  const handleForgotPassword = () => {
-    if (!email.trim()) {
-      setErrors({ email: "Please enter your email address" });
-      return;
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-      setErrors({ email: "Please enter a valid email address" });
-      return;
-    }
-
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        setResetMessage("Password reset email sent! Please check your inbox.");
-        setErrors({});
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        if (errorCode === 'auth/user-not-found') {
-          setErrors({ email: "No user found with this email address" });
-        } else {
-          setErrors({ email: "An error occurred. Please try again." });
-        }
-        setResetMessage("");
-      });
-  };
-
-  const handleBackToLogin = () => {
-    setShowFirstDiv(true);
-    setErrors({});
-    setResetMessage("");
-  };
+  }
+  const forGetPassword = () => { 
+    setShowFirstDiv(false);
+  }
+const handleBackToLogin = () =>{
+  setShowFirstDiv(true);
+}
 
   return (
     <Box sx={{
@@ -144,7 +124,7 @@ const Login = () => {
         }}
       >
         <Grid container spacing={0}>
-          <Grid item xs={12} md={6} sx={{
+          <Grid item size={6} sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -185,7 +165,7 @@ const Login = () => {
             >
               <Box
                 component="img"
-                src="/assets/google-logo.png"
+                src={GoogleLogo}
                 alt="Google logo"
                 sx={{ pr: 2, width: 24, height: 24 }}
               />
@@ -248,32 +228,27 @@ const Login = () => {
               Login to Continue
             </Button>
 
-            {/* Sign Up and Forgot Password Links */}
+            {/* Sign Up Link */}
             <Typography variant="body2" align="center" sx={{ mt: 2 }}>
               Don’t have an account?{" "}
               <Link
                 component={RouterLink}
-                to="/"
+                to="/" // Registration route
                 underline="hover"
                 sx={{ color: "orange" }}
               >
                 Sign up
               </Link>
             </Typography>
-            <Typography
-              onClick={() => setShowFirstDiv(false)}
-              variant="body2"
-              align="center"
-              component="p"
-              sx={{ mt: 1, color: "#6f42ff", cursor: "pointer" }}
-            >
-              Forgotten password?
+            <Typography onClick={forGetPassword} variant="p" align="center" component="p" sx={{ color: " #6f42ffff" }}>
+              Forgotten password
             </Typography>
+
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item size={6}>
             <Box
               component="img"
-              src="/assets/login.png"
+              src={LoginImg}
               alt="Login"
               sx={{
                 width: "100%",
@@ -296,8 +271,7 @@ const Login = () => {
           borderRadius: 5,
           p: 5,
           display: showFirstDiv ? 'none' : 'block',
-        }}
-      >
+        }}>
         <Typography
           variant="h5"
           sx={{
@@ -308,14 +282,7 @@ const Login = () => {
             lineHeight: 1.3,
           }}
         >
-          Reset Your Password
-        </Typography>
-        <Typography
-          variant="body2"
-          align="center"
-          sx={{ mb: 2, color: "#333" }}
-        >
-          Enter your email address to receive a password reset link.
+          Login to your account!
         </Typography>
         <TextField
           onChange={(e) => setEmail(e.target.value)}
@@ -327,17 +294,8 @@ const Login = () => {
           error={!!errors.email}
           helperText={errors.email}
         />
-        {resetMessage && (
-          <Typography
-            variant="body2"
-            align="center"
-            sx={{ mt: 2, color: "green" }}
-          >
-            {resetMessage}
-          </Typography>
-        )}
         <Button
-          onClick={handleForgotPassword}
+          onClick={handleBackToLogin}
           variant="contained"
           fullWidth
           sx={{
@@ -350,27 +308,28 @@ const Login = () => {
             textTransform: "none",
           }}
         >
-          Send Reset Email
+          Back to Login
         </Button>
         <Button
-          onClick={handleBackToLogin}
-          variant="outlined"
+          onClick={handleLogin}
+          variant="contained"
           fullWidth
           sx={{
-            mt: 2,
+            mt: 3,
             py: 1.5,
-            borderColor: "#6f42ff",
-            color: "#6f42ff",
+            background:
+              "linear-gradient(90deg, rgba(111,66,255,1) 0%, rgba(0,150,255,1) 100%)",
             borderRadius: "8px",
             fontWeight: "bold",
             textTransform: "none",
           }}
         >
-          Back to Login
+          Send Email
         </Button>
       </Paper>
     </Box>
-  );
-};
 
-export default Login;
+  )
+}
+
+export default Login2
