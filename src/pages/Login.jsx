@@ -296,9 +296,9 @@ const Login = () => {
         sx={{
           maxWidth: 500,
           width: "100%",
-          alignItems: "center",
-          flexDirection: "column",
-          justifyContent: "center",
+          //alignItems: "center",
+          //flexDirection: "column",
+          //justifyContent: "center",
           borderRadius: 5,
           p: 5,
           display: showFirstDiv ? 'none' : 'block',
