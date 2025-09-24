@@ -346,17 +346,19 @@ const Login = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          gap: 3,
+          mt: 1,
         }}>
           <Button
             onClick={handleForgotPassword}
             variant="contained"
             fullWidth
             sx={{
-              mt: 2,
-              py: 1.5,
+              py: 2,
+              px: 1,
               background:
                 "linear-gradient(90deg, rgba(111,66,255,1) 0%, rgba(0,150,255,1) 100%)",
-              borderRadius: "12px",
+              borderRadius: "30px",
               fontWeight: "bold",
               textTransform: "none",
             }}
@@ -368,11 +370,11 @@ const Login = () => {
             variant="outlined"
             fullWidth
             sx={{
-              mt: 2,
-              py: 1.5,
+              py: 2,
+              px: 1,
               borderColor: "#6f42ff",
               color: "#6f42ff",
-              borderRadius: "12px",
+              borderRadius: "30px",
               fontWeight: "bold",
               textTransform: "none",
             }}
