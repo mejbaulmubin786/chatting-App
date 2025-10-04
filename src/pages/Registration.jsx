@@ -8,11 +8,14 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import RegistrationImg from "../assets/registration.png";
 import BackgroundImg from "../assets/background.jpg";
+import BackgroundSecond from "../assets/background2.jpg";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import CircularProgress from "@mui/material/CircularProgress";
+import BubbleBackground from "../components/BubbleBackground";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -36,18 +39,6 @@ const Registration = () => {
   const [firebaseError, setFirebaseError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
-
-
-  // Generate bubbles
-  const bubbleCount = 100; // Number of bubbles
-  const bubbles = Array.from({ length: bubbleCount }).map((_, index) => ({
-    id: index,
-    size: Math.random() * 50 + 20, // Random size between 20px and 70px
-    left: Math.random() * 100, // Random horizontal position (0-100%)
-    duration: Math.random() * 5 + 5, // Random duration between 5s and 10s
-    delay: Math.random() * 5, // Random delay between 0s and 5s
-  }));
-
 
   // handle form submit
   const handleSignUp = async (e) => {
@@ -136,10 +127,11 @@ const Registration = () => {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        height: '100vh',
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        boxSizing: "border-box",
         bgcolor: "#f9f9f9",
         p: 2,
         backgroundImage: `url(${BackgroundImg})`, // Replace with your image path
@@ -149,49 +141,7 @@ const Registration = () => {
       }}
     >
 
-      {/* Bubble Animation */}
-            <Box
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                zIndex: 1,
-                pointerEvents: "none", // Prevents bubbles from interfering with clicks
-              }}
-            >
-              {bubbles.map((bubble) => (
-                <Box
-                  key={bubble.id}
-                  sx={{
-                    position: "absolute",
-                    bottom: "-100px", // Start below the viewport
-                    left: `${bubble.left}%`,
-                    width: `${bubble.size}px`,
-                    height: `${bubble.size}px`,
-                    background: "rgba(255, 255, 255, 0.3)", // Semi-transparent white
-                    borderRadius: "50%", // Circular shape
-                    animation: `rise ${bubble.duration}s linear infinite`,
-                    animationDelay: `${bubble.delay}s`,
-                    "@keyframes rise": {
-                      "0%": {
-                        transform: "translateY(0) translateX(0)",
-                        opacity: 0.3,
-                      },
-                      "50%": {
-                        transform: "translateY(-50vh) translateX(10px)", // Slight horizontal sway
-                        opacity: 0.5,
-                      },
-                      "100%": {
-                        transform: "translateY(-100vh) translateX(-10px)", // Move to top
-                        opacity: 0,
-                      },
-                    },
-                  }}
-                />
-              ))}
-            </Box>
+      <BubbleBackground />
       <Paper
         elevation={3}
         sx={{
@@ -199,22 +149,18 @@ const Registration = () => {
           width: "100%",
           borderRadius: 3,
           overflow: "hidden",
-          zIndex: 2, // Above bubbles
+          zIndex: 2,
         }}
       >
-        <Grid container sx={{ flexWrap: "nowrap" }}>
+        <Grid container spacing={0}>
           {/* Left side (Form ~55%) */}
-          <Grid
-            item
-            xs={7}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              p: { xs: 3, md: 6 },
-            }}
-          >
+          <Grid item size={6} sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: { xs: 3, md: 6 },
+          }}>
             {/* make this Box the form so Enter key submits */}
             <Box
               component="form"
@@ -339,7 +285,7 @@ const Registration = () => {
           </Grid>
 
           {/* Right side (Image ~45%) */}
-          <Grid item xs={5}>
+          <Grid item size={6}>
             <Box
               component="img"
               src={RegistrationImg}
