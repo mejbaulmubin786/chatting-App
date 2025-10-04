@@ -30,6 +30,17 @@ const Login = () => {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   const [resetMessage, setResetMessage] = useState("");
 
+
+    // Generate bubbles
+  const bubbleCount = 100; // Number of bubbles
+  const bubbles = Array.from({ length: bubbleCount }).map((_, index) => ({
+    id: index,
+    size: Math.random() * 50 + 20, // Random size between 20px and 70px
+    left: Math.random() * 100, // Random horizontal position (0-100%)
+    duration: Math.random() * 5 + 5, // Random duration between 5s and 10s
+    delay: Math.random() * 5, // Random delay between 0s and 5s
+  }));
+
   // handle form submit
   const handleLogin = () => {
     let newErrors = {};
@@ -160,6 +171,49 @@ const Login = () => {
       backgroundPosition: "center", // Centers the image
       backgroundRepeat: "no-repeat", // Prevents the image from repeating
     }}>
+      {/* Bubble Animation */}
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 1,
+                pointerEvents: "none", // Prevents bubbles from interfering with clicks
+              }}
+            >
+              {bubbles.map((bubble) => (
+                <Box
+                  key={bubble.id}
+                  sx={{
+                    position: "absolute",
+                    bottom: "-100px", // Start below the viewport
+                    left: `${bubble.left}%`,
+                    width: `${bubble.size}px`,
+                    height: `${bubble.size}px`,
+                    background: "rgba(255, 255, 255, 0.3)", // Semi-transparent white
+                    borderRadius: "50%", // Circular shape
+                    animation: `rise ${bubble.duration}s linear infinite`,
+                    animationDelay: `${bubble.delay}s`,
+                    "@keyframes rise": {
+                      "0%": {
+                        transform: "translateY(0) translateX(0)",
+                        opacity: 0.3,
+                      },
+                      "50%": {
+                        transform: "translateY(-50vh) translateX(10px)", // Slight horizontal sway
+                        opacity: 0.5,
+                      },
+                      "100%": {
+                        transform: "translateY(-100vh) translateX(-10px)", // Move to top
+                        opacity: 0,
+                      },
+                    },
+                  }}
+                />
+              ))}
+            </Box>
       <Paper
         elevation={12}
         sx={{
@@ -168,6 +222,7 @@ const Login = () => {
           borderRadius: 5,
           overflow: "hidden",
           display: showFirstDiv ? 'block' : 'none',
+          zIndex: 2, // Above bubbles
         }}
       >
         <Grid container spacing={0}>
