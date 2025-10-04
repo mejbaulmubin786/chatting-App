@@ -8,6 +8,7 @@ const BubbleBackground = () => {
     // Gradient color দুই শেডে
     const pastel1 = `hsla(${hue}, 70%, 80%, 0.6)`;
     const pastel2 = `hsla(${hue}, 80%, 90%, 0.3)`;
+    const pastel3 = `hsla(${hue}, 85%, 95%, 0.5)`;
 
     return {
       id: index,
@@ -17,6 +18,7 @@ const BubbleBackground = () => {
       delay: Math.random() * 5,
       color1: pastel1,
       color2: pastel2,
+      color3: pastel3,
     };
   });
 

@@ -78,7 +78,7 @@ const Login = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           if (userCredential.user.emailVerified === true) {
-            navigate('/');
+            navigate('/home');
           } else {
             setErrors({ email: "Please verify your email before logging in." });
           }
@@ -157,10 +157,7 @@ const Login = () => {
       width: '100vw',
       boxSizing: "border-box",
       height: '100vh',
-      backgroundImage: `url(${BackgroundImg})`,
-      backgroundSize: "cover", // Ensures the image covers the entire Box
-      backgroundPosition: "center", // Centers the image
-      backgroundRepeat: "no-repeat", // Prevents the image from repeating
+                                
        zIndex: 2,
     }}>
       <BubbleBackground />

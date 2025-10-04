@@ -134,10 +134,10 @@ const Registration = () => {
         boxSizing: "border-box",
         bgcolor: "#f9f9f9",
         p: 2,
-        backgroundImage: `url(${BackgroundImg})`, // Replace with your image path
-              backgroundSize: "cover", // Ensures the image covers the entire Box
-              backgroundPosition: "center", // Centers the image
-              backgroundRepeat: "no-repeat", // Prevents the image from repeating
+        // backgroundImage: `url(${BackgroundImg})`, // Replace with your image path
+        //       backgroundSize: "cover", // Ensures the image covers the entire Box
+        //       backgroundPosition: "center", // Centers the image
+        //       backgroundRepeat: "no-repeat", // Prevents the image from repeating
       }}
     >
 
