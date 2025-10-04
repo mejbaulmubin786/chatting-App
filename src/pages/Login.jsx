@@ -13,34 +13,32 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-const Login2 = () => {
+const Login = () => {
   const auth = getAuth();
   let navigate = useNavigate();
+  // 👀 state for password show/hide
   const [showPassword, setShowPassword] = useState(false);
+
+  // form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // error states
   const [errors, setErrors] = useState({});
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   const [resetMessage, setResetMessage] = useState("");
 
-  // Generate bubbles
-  const bubbleCount = 100; // Number of bubbles
-  const bubbles = Array.from({ length: bubbleCount }).map((_, index) => ({
-    id: index,
-    size: Math.random() * 50 + 20, // Random size between 20px and 70px
-    left: Math.random() * 100, // Random horizontal position (0-100%)
-    duration: Math.random() * 5 + 5, // Random duration between 5s and 10s
-    delay: Math.random() * 5, // Random delay between 0s and 5s
-  }));
-
+  // handle form submit
   const handleLogin = () => {
     let newErrors = {};
 
     if (!email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
+    ) {
       newErrors.email = "Please enter a valid email address";
     }
 
@@ -48,12 +46,22 @@ const Login2 = () => {
       newErrors.password = "Password is required";
     } else {
       let passwordErrors = [];
-      if (password.length < 8) passwordErrors.push("at least 8 characters");
-      if (!/[A-Z]/.test(password)) passwordErrors.push("one uppercase letter");
-      if (!/[a-z]/.test(password)) passwordErrors.push("one lowercase letter");
-      if (!/[0-9]/.test(password)) passwordErrors.push("one number");
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password))
+
+      if (password.length < 8) {
+        passwordErrors.push("at least 8 characters");
+      }
+      if (!/[A-Z]/.test(password)) {
+        passwordErrors.push("one uppercase letter");
+      }
+      if (!/[a-z]/.test(password)) {
+        passwordErrors.push("one lowercase letter");
+      }
+      if (!/[0-9]/.test(password)) {
+        passwordErrors.push("one number");
+      }
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
         passwordErrors.push("one special character");
+      }
 
       if (passwordErrors.length > 0) {
         newErrors.password = `Password must contain ${passwordErrors.join(", ")}`;
@@ -62,18 +70,20 @@ const Login2 = () => {
 
     setErrors(newErrors);
 
+    // ✅ যদি error না থাকে
     if (Object.keys(newErrors).length === 0) {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          const user = userCredential.user;
           if (userCredential.user.emailVerified === true) {
-            navigate("/");
+            navigate('/');
           } else {
             setErrors({ email: "Please verify your email before logging in." });
           }
         })
         .catch((error) => {
           const errorCode = error.code;
-          if (errorCode === "auth/wrong-password" || errorCode === "auth/user-not-found") {
+          if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
             setErrors({ email: "Invalid email or password" });
           } else {
             setErrors({ email: "An error occurred. Please try again." });
@@ -82,8 +92,28 @@ const Login2 = () => {
     }
   };
 
+
+  const provider = new GoogleAuthProvider();
   const handleGoogle = () => {
-    console.log("Google");
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
   };
 
   const handleForgotPassword = () => {
@@ -102,7 +132,7 @@ const Login2 = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        if (errorCode === "auth/user-not-found") {
+        if (errorCode === 'auth/user-not-found') {
           setErrors({ email: "No user found with this email address" });
         } else {
           setErrors({ email: "An error occurred. Please try again." });
@@ -118,66 +148,18 @@ const Login2 = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100vw",
-        boxSizing: "border-box",
-        height: "100vh",
-        backgroundImage: `url(${BackgroundImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Bubble Animation */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 1,
-          pointerEvents: "none", // Prevents bubbles from interfering with clicks
-        }}
-      >
-        {bubbles.map((bubble) => (
-          <Box
-            key={bubble.id}
-            sx={{
-              position: "absolute",
-              bottom: "-100px", // Start below the viewport
-              left: `${bubble.left}%`,
-              width: `${bubble.size}px`,
-              height: `${bubble.size}px`,
-              background: "rgba(255, 255, 255, 0.3)", // Semi-transparent white
-              borderRadius: "50%", // Circular shape
-              animation: `rise ${bubble.duration}s linear infinite`,
-              animationDelay: `${bubble.delay}s`,
-              "@keyframes rise": {
-                "0%": {
-                  transform: "translateY(0) translateX(0)",
-                  opacity: 0.3,
-                },
-                "50%": {
-                  transform: "translateY(-50vh) translateX(10px)", // Slight horizontal sway
-                  opacity: 0.5,
-                },
-                "100%": {
-                  transform: "translateY(-100vh) translateX(-10px)", // Move to top
-                  opacity: 0,
-                },
-              },
-            }}
-          />
-        ))}
-      </Box>
-
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: '100vw',
+      boxSizing: "border-box",
+      height: '100vh',
+      backgroundImage: `url(${BackgroundImg})`,
+      backgroundSize: "cover", // Ensures the image covers the entire Box
+      backgroundPosition: "center", // Centers the image
+      backgroundRepeat: "no-repeat", // Prevents the image from repeating
+    }}>
       <Paper
         elevation={12}
         sx={{
@@ -185,22 +167,17 @@ const Login2 = () => {
           width: "100%",
           borderRadius: 5,
           overflow: "hidden",
-          display: showFirstDiv ? "block" : "none",
-          zIndex: 2, // Above bubbles
+          display: showFirstDiv ? 'block' : 'none',
         }}
       >
         <Grid container spacing={0}>
-          <Grid
-            item
-            size={6}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              p: { xs: 3, md: 6 },
-            }}
-          >
+          <Grid item size={6} sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: { xs: 3, md: 6 },
+          }}>
             <Typography
               variant="h5"
               sx={{
@@ -214,6 +191,7 @@ const Login2 = () => {
               Login to your account!
             </Typography>
 
+            {/* Google Login */}
             <Box
               onClick={handleGoogle}
               sx={{
@@ -243,6 +221,7 @@ const Login2 = () => {
               </Typography>
             </Box>
 
+            {/* Email Field */}
             <TextField
               onChange={(e) => setEmail(e.target.value)}
               label="Email Address"
@@ -254,6 +233,7 @@ const Login2 = () => {
               helperText={errors.email}
             />
 
+            {/* Password Field with Eye Icon */}
             <TextField
               onChange={(e) => setPassword(e.target.value)}
               label="Password"
@@ -277,6 +257,7 @@ const Login2 = () => {
               }}
             />
 
+            {/* Login Button */}
             <Button
               onClick={handleLogin}
               variant="contained"
@@ -294,9 +275,15 @@ const Login2 = () => {
               Login to Continue
             </Button>
 
+            {/* Sign Up and Forgot Password Links */}
             <Typography variant="body2" align="center" sx={{ mt: 2 }}>
               Don’t have an account?{" "}
-              <Link component={RouterLink} to="/" underline="hover" sx={{ color: "orange" }}>
+              <Link
+                component={RouterLink}
+                to="/"
+                underline="hover"
+                sx={{ color: "orange" }}
+              >
                 Sign up
               </Link>
             </Typography>
@@ -329,10 +316,12 @@ const Login2 = () => {
         sx={{
           maxWidth: 500,
           width: "100%",
+          //alignItems: "center",
+          //flexDirection: "column",
+          //justifyContent: "center",
           borderRadius: 5,
           p: 5,
-          display: showFirstDiv ? "none" : "block",
-          zIndex: 2, // Above bubbles
+          display: showFirstDiv ? 'none' : 'block',
         }}
       >
         <Typography
@@ -347,7 +336,10 @@ const Login2 = () => {
         >
           Reset Your Password
         </Typography>
-        <Typography variant="body2" sx={{ mb: 1, color: "#333" }}>
+        <Typography
+          variant="body2"
+          sx={{ mb: 1, color: "#333" }}
+        >
           Enter your email address to receive a password reset link.
         </Typography>
         <TextField
@@ -361,20 +353,22 @@ const Login2 = () => {
           helperText={errors.email}
         />
         {resetMessage && (
-          <Typography variant="body2" align="center" sx={{ mt: 2, color: "green" }}>
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ mt: 2, color: "green" }}
+          >
             {resetMessage}
           </Typography>
         )}
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 3,
-            mt: 1,
-          }}
-        >
+        <Box sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 3,
+          mt: 1,
+        }}>
           <Button
             onClick={handleForgotPassword}
             variant="contained"
@@ -413,4 +407,4 @@ const Login2 = () => {
   );
 };
 
-export default Login2;
+export default Login;
